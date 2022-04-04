@@ -9,24 +9,28 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <vector>
 #include <algorithm> 
 #include <string>
+#include <stack>
+#include <cassert>
+#include <set>
 using namespace std; 
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
+
 class MyClassVector1 
 { 
   private:  
-      vector<int> vec; 
+      vector<int> vec1; 
   public: 
       MyClassVector1 (vector<int> v)  //parameterized constructor
       { 
-        vec = v; 
+        vec1 = v; 
       } 
       void print() 
       { 
           /// print the value of vector 
-          for (int i = 0; i < vec.size(); i++) 
+          for (int i = 0; i < vec1.size(); i++) 
           {
-              cout << vec[i] << " "; 
+              cout << vec1[i] << " "; 
           }    
       } 
 };
@@ -34,20 +38,36 @@ class MyClassVector1
 class MyClassVector2
 {
   private:
-    vector<double> vec2;
-  public:
-    MyClassVector2 (vector<double> v2)
+    vector<int> vec2;
+   public:
+    MyClassVector2 (vector<int> v) : vec2(v)
     {
-      vec2 = v2;
-    };
+    }
     void print()
     {
-      for (int i = 0; i < vec2.size(); i++)
-        {
-          cout << vec2[i] << " ";
-        }
-      
+        /// print the value of vector
+        for (int i = 0; i < vec2.size(); i++)
+            cout << vec2[i] << " ";
     }
+};
+
+class MyClassVector3
+{
+  private:
+    vector<int>& vec3;
+  public:
+      // this is the right way to assign
+      // the reference of stl container
+      MyClassVector3 (vector<int>& arr)
+          : vec3(arr)
+      {
+      }
+      void print()
+      {
+          /// print the value of vector
+          for (int i = 0; i < vec3.size(); i++)
+              cout << vec3[i] << " ";
+      }
 };
 
 int main() 
@@ -105,33 +125,86 @@ int main()
     /****Section_Name***Vector_as_Class_Member*/ 
     //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/
 
-   cout << "\nVector_as_Class_Member" << endl; 
-    vector<int> vec; 
+    cout << "\nVector_as_Class_Member_1\n"; 
+    vector<int> vec1; 
         for (int i = 1; i <= 5; i++) 
-            vec.push_back(i); 
-        MyClassVector1 obj(vec); 
-        obj.print(); 
-      
-      //Continue with MyClassVector2 and MyClassVector3
-  
-   cout << "\nVector_as_Class_Member_2" << endl; 
-    vector<int> vec2; 
-        for (int i = 1; i <= 5; i++) 
-            vec2.push_back(i); 
-        MyClassVector2 obj(vec2); 
-        obj.print(); 
+            vec1.push_back(i); 
+        MyClassVector1 obj1(vec1); 
+        obj1.print(); 
+
+    cout << "\nVector_as_Class_Member_2\n";
+    vector<int> vec2;
+        for (int i = 2; i <= 6; i++)
+          vec2.push_back(i);
+        MyClassVector2 obj2(vec2);
+        obj2.print();
+
+    cout << "\nVector_as_Class_Member_3\n";
+    vector<int> vec3;
+        for (int i = 3; i <= 7; i++)
+          vec3.push_back(i);
+        MyClassVector3 obj3(vec3);
+        obj3.print();
+
     /****Section_Name***STL_Iterators*/ 
     
+    vector<int> vint(10);  //vector with 10 numbers
+    vint[0] = 10;
+    vint[1] = 20;
+    vint[2] = 30;
+    vint[3] = 40;
+    vint[4] = 50;
+    vint[5] = 60;
+    vint[6] = 70;
+    vint[7] = 80;
+    vint[8] = 90;
+    vint[9] = 100;
+
+    cout << "\n \nValues expressed through STL iterators:\n";
+    vector<int> :: iterator it;
+    for (it = vint.begin(); it != vint.end(); ++it )
+      {
+        cout << *it << " ";
+      }
 
     /****Section_Name*** Stack*/
 
+    stack<int> st;
 
-    //Write comments that help one better understand what the code is doing.
+    st.push(100);  //push number on the stack
+    assert(st.size() == 1); //verify 1 element is in stack
+    assert(st.top() == 100); //verify element = 100
 
+    st.top() = 456; //assign new value
+    assert(st.top() == 456); //verify new value
+
+    st.pop(); //remove element (last element?)
+    assert(st.empty() == true); //veify stack is empty
+
+    //CREATE ITERATOR FOR STACK?
+  
     /****Section_Name**** Set*/
-    //Write the code as presented in: 3. std::set
 
-    //Write comments that help one better understand what the code is doing.
+    cout << "\n \nValues expressed in set:\n";
+    set<int> iset; //set of unique int numbers
+
+    iset.insert(11); //insert values
+    iset.insert(-11);
+    iset.insert(55);
+    iset.insert(22);
+    iset.insert(22);
+    if (iset.find(55) != iset.end())  //if value is not found
+      {
+        iset.insert(55);  //insert value
+      }
+    assert(iset.size() == 4); //verify size
+  
+    set <int> :: iterator setit;
+  
+    for (setit = iset.begin(); setit != iset.end(); setit++)
+      {
+        cout << *setit << " " ;
+      }
 
     /****Section_Name****Pair_Structure*/
     //Write the code as presented in: 4. std::pair structure
